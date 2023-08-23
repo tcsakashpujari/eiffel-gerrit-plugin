@@ -44,7 +44,7 @@ public class MessageQueueHandler implements LifecycleListener {
 
     @Override
     public void start() {
-        pool = workQueue.createQueue(poolSize, "Eiffel Message Sender");
+        pool = workQueue.createQueue(poolSize, "Eiffel Message Sender",false);
     }
 
     @Override

@@ -32,10 +32,11 @@ import com.ericsson.gerrit.plugins.eiffel.listeners.AbstractEventListener;
 import com.ericsson.gerrit.plugins.eiffel.listeners.ChangeMergedEventListener;
 import com.ericsson.gerrit.plugins.eiffel.listeners.PatchsetCreatedEventListener;
 import com.google.common.base.Supplier;
+import com.google.gerrit.entities.Change.Key;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.extensions.annotations.PluginData;
 import com.google.gerrit.extensions.annotations.PluginName;
-import com.google.gerrit.reviewdb.client.Change.Key;
-import com.google.gerrit.reviewdb.client.Project.NameKey;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
@@ -212,7 +213,7 @@ public class LinkingSteps {
         patchSetCreatedEvent.patchSet = patchSetAttributeSupplier;
         patchSetCreatedEvent.changeKey = changeKey;
 
-        when(patchSetCreatedEvent.getProjectNameKey()).thenReturn(new NameKey(PROJECT_NAME));
+        when(patchSetCreatedEvent.getProjectNameKey()).thenReturn(Project.nameKey(PROJECT_NAME));
         return patchSetCreatedEvent;
     }
 
@@ -228,7 +229,7 @@ public class LinkingSteps {
         changeMergedEvent.changeKey = changeKey;
         changeMergedEvent.newRev = commitId;
 
-        when(changeMergedEvent.getProjectNameKey()).thenReturn(new NameKey(PROJECT_NAME));
+        when(changeMergedEvent.getProjectNameKey()).thenReturn(Project.nameKey(PROJECT_NAME));
         return changeMergedEvent;
     }
 

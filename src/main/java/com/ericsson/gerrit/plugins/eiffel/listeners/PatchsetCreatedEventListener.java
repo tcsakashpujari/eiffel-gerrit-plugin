@@ -28,8 +28,10 @@ import com.ericsson.gerrit.plugins.eiffel.events.generators.EiffelSourceChangeCr
 import com.ericsson.gerrit.plugins.eiffel.git.CommitInformation;
 import com.google.gerrit.extensions.annotations.PluginData;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.PatchSetCreatedEvent;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.inject.Inject;
 
 /**
@@ -61,7 +63,7 @@ public class PatchsetCreatedEventListener extends AbstractEventListener {
 
     @Override
     protected void prepareAndSendEiffelEvent(final Event gerritEvent,
-            final EiffelPluginConfiguration pluginConfig) {
+            final EiffelPluginConfiguration pluginConfig) throws RestApiException, PermissionBackendException {
         final PatchSetCreatedEvent patchSetCreatedEvent = (PatchSetCreatedEvent) gerritEvent;
         LOGGER.info("PatchSetCreatedEvent recieved from Gerrit, "
                 + "preparing to send a SourceChangeCreated eiffel event.\n{}",

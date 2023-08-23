@@ -24,8 +24,9 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gerrit.reviewdb.client.Project.NameKey;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.server.config.PluginConfig;
+import com.google.gerrit.server.config.PluginConfig.Update;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.project.NoSuchProjectException;
 
@@ -165,7 +166,7 @@ public class EiffelPluginConfiguration {
         final String[] propertyValues = pluginConfig.getStringList(property);
         if (propertyValues != null && propertyValues.length > 0) {
             propertyValue = Arrays.stream(propertyValues).collect(Collectors.joining(","));
-            pluginConfig.setString(property, propertyValue);
+//            pluginConfig.setString(property, propertyValue);
         }
         return propertyValue;
     }

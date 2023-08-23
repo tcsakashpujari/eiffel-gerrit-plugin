@@ -23,9 +23,9 @@ import com.google.gerrit.extensions.restapi.IdString;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.UnprocessableEntityException;
 import com.google.gerrit.server.project.CommitResource;
-import com.google.gerrit.server.project.CommitsCollection;
 import com.google.gerrit.server.project.ProjectResource;
-import com.google.gerrit.server.project.ProjectsCollection;
+import com.google.gerrit.server.restapi.project.CommitsCollection;
+import com.google.gerrit.server.restapi.project.ProjectsCollection;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ RevCommit.class })

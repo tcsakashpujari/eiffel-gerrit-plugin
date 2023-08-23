@@ -1,14 +1,16 @@
 package com.ericsson.gerrit.plugins.eiffel.configuration;
 
+import static org.junit.Assert.assertEquals;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.when;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
-import static org.junit.Assert.assertEquals;
-import com.ericsson.gerrit.plugins.eiffel.configuration.EiffelPluginConfiguration;
-import com.google.gerrit.reviewdb.client.Project.NameKey;
+
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.project.NoSuchProjectException;
@@ -35,7 +37,7 @@ public class EiffelPluginConfigurationTest {
 
     @Before
     public void init() throws NoSuchProjectException {
-        nameKey = new NameKey(PROJECT_NAME);
+        nameKey = Project.nameKey(PROJECT_NAME);
         pluginConfigFactory = mock(PluginConfigFactory.class);
         pluginConfig = mock(PluginConfig.class);
 

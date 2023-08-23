@@ -19,9 +19,11 @@ package com.ericsson.gerrit.plugins.eiffel.events.generators;
 import com.ericsson.gerrit.plugins.eiffel.configuration.EiffelPluginConfiguration;
 import com.ericsson.gerrit.plugins.eiffel.events.EiffelSourceChangeSubmittedEvent;
 import com.ericsson.gerrit.plugins.eiffel.git.CommitInformation;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.data.ChangeAttribute;
 import com.google.gerrit.server.data.PatchSetAttribute;
 import com.google.gerrit.server.events.ChangeMergedEvent;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 
 public final class EiffelSourceChangeSubmittedEventGenerator extends EiffelEventGenerator {
 
@@ -35,9 +37,11 @@ public final class EiffelSourceChangeSubmittedEventGenerator extends EiffelEvent
      * @param commitInformation
      * @param pluginConfig
      * @return EiffelSourceChangeSubmittedEvent
+     * @throws PermissionBackendException 
+     * @throws RestApiException 
      */
     public static EiffelSourceChangeSubmittedEvent generate(final EiffelPluginConfiguration pluginConfig,
-            final ChangeMergedEvent changeMergedEvent, final CommitInformation commitInformation) {
+            final ChangeMergedEvent changeMergedEvent, final CommitInformation commitInformation) throws RestApiException, PermissionBackendException {
         final ChangeAttribute changeAttribute = changeMergedEvent.change.get();
         final PatchSetAttribute patchSetAttribute = changeMergedEvent.patchSet.get();
         final String commitId = changeMergedEvent.newRev;

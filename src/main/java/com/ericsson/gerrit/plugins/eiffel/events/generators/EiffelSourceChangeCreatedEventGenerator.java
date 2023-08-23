@@ -19,9 +19,11 @@ package com.ericsson.gerrit.plugins.eiffel.events.generators;
 import com.ericsson.gerrit.plugins.eiffel.configuration.EiffelPluginConfiguration;
 import com.ericsson.gerrit.plugins.eiffel.events.EiffelSourceChangeCreatedEvent;
 import com.ericsson.gerrit.plugins.eiffel.git.CommitInformation;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.data.ChangeAttribute;
 import com.google.gerrit.server.data.PatchSetAttribute;
 import com.google.gerrit.server.events.PatchSetCreatedEvent;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 
 public final class EiffelSourceChangeCreatedEventGenerator extends EiffelEventGenerator {
 
@@ -36,11 +38,13 @@ public final class EiffelSourceChangeCreatedEventGenerator extends EiffelEventGe
      * @param pluginDirectoryPath
      * @param commitInformation
      * @return EiffelSourceChangeCreatedEvent
+     * @throws PermissionBackendException 
+     * @throws RestApiException 
      */
     public static EiffelSourceChangeCreatedEvent generate(
             final EiffelPluginConfiguration pluginConfig,
             final PatchSetCreatedEvent patchSetCreatedEvent,
-            final CommitInformation commitInformation) {
+            final CommitInformation commitInformation) throws RestApiException, PermissionBackendException {
         final ChangeAttribute changeAttribute = patchSetCreatedEvent.change.get();
         final PatchSetAttribute patchSetAttribute = patchSetCreatedEvent.patchSet.get();
         final String projectName = changeAttribute.project;

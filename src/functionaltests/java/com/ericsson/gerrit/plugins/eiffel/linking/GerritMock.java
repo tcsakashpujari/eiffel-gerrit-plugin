@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.ericsson.gerrit.plugins.eiffel.git.CommitInformation;
-import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
+import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 
 /**
  * This class will very simply simulate Gerrit when creating new changes and submitting them.
@@ -168,12 +169,13 @@ public class GerritMock {
      * @param changeId          the current change containing commit SHA and parent SHA used in the
      *                          expectation
      * @param projectName       project name used in the expectation
-     * @throws ResourceNotFoundException
      * @throws IOException
+     * @throws PermissionBackendException 
+     * @throws RestApiException 
      */
     public void setExpectionsFor(final CommitInformation commitInformation, final String changeId,
             final String projectName)
-            throws ResourceNotFoundException, IOException {
+            throws IOException, RestApiException, PermissionBackendException {
         final GitCommit commit = getCommit(changeId);
         when(commitInformation.getParentsSHAs(commit.sha, projectName)).thenReturn(
                 Arrays.asList(commit.parentSha));

@@ -28,8 +28,10 @@ import com.ericsson.gerrit.plugins.eiffel.events.generators.EiffelSourceChangeSu
 import com.ericsson.gerrit.plugins.eiffel.git.CommitInformation;
 import com.google.gerrit.extensions.annotations.PluginData;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.events.ChangeMergedEvent;
 import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.inject.Inject;
 
 /**
@@ -60,7 +62,7 @@ public class ChangeMergedEventListener extends AbstractEventListener {
 
     @Override
     protected void prepareAndSendEiffelEvent(final Event gerritEvent,
-            final EiffelPluginConfiguration pluginConfig) {
+            final EiffelPluginConfiguration pluginConfig) throws RestApiException, PermissionBackendException {
         final ChangeMergedEvent changeMergedEvent = (ChangeMergedEvent) gerritEvent;
         LOGGER.info("ChangeMergedEvent recieved from Gerrit, "
                 + "preparing to send a SourceChangeSubmitted eiffel event.\n{}",

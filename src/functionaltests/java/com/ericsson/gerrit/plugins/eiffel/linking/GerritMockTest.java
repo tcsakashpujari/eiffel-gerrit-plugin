@@ -8,7 +8,8 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.ericsson.gerrit.plugins.eiffel.git.CommitInformation;
-import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
+import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 
 public class GerritMockTest {
 
@@ -161,7 +162,7 @@ public class GerritMockTest {
     }
 
     @Test
-    public void setCollectionsExpectation() throws ResourceNotFoundException, IOException {
+    public void setCollectionsExpectation() throws IOException, RestApiException, PermissionBackendException {
 
         final GerritMock gerritMock = new GerritMock();
         gerritMock.createBranch(BRANCH_1);

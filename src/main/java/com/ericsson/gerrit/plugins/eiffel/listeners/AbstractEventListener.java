@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,11 +31,13 @@ import com.ericsson.gerrit.plugins.eiffel.configuration.EiffelPluginConfiguratio
 import com.ericsson.gerrit.plugins.eiffel.configuration.RetryConfiguration;
 import com.ericsson.gerrit.plugins.eiffel.events.EiffelEvent;
 import com.ericsson.gerrit.plugins.eiffel.messaging.EiffelEventSender;
-import com.google.gerrit.common.EventListener;
-import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.events.ChangeEvent;
 import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.EventListener;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.inject.Inject;
 
 import io.github.resilience4j.decorators.Decorators;
@@ -93,7 +95,13 @@ public abstract class AbstractEventListener implements EventListener {
             return;
         }
 
-        prepareAndSendEiffelEvent(gerritEvent, pluginConfig);
+        try {
+			prepareAndSendEiffelEvent(gerritEvent, pluginConfig);
+		} catch (RestApiException e) {
+			e.printStackTrace();
+		} catch (PermissionBackendException e) {
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -160,7 +168,7 @@ public abstract class AbstractEventListener implements EventListener {
     protected abstract boolean isExpectedGerritEvent(Event gerritEvent);
 
     protected abstract void prepareAndSendEiffelEvent(Event gerritEvent,
-            EiffelPluginConfiguration pluginConfig);
+            EiffelPluginConfiguration pluginConfig) throws RestApiException, PermissionBackendException ;
 
     private void initializeThreadPoolExecutor() {
         if (initialized.compareAndSet(false, true)) {

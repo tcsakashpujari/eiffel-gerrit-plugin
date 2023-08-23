@@ -36,12 +36,14 @@ import com.ericsson.gerrit.plugins.eiffel.storage.EventStorageFactory;
 import com.ericsson.gerrit.plugins.eiffel.storage.SourceChangeCreatedStorage;
 import com.ericsson.gerrit.plugins.eiffel.storage.SourceChangeSubmittedStorage;
 import com.google.common.base.Supplier;
-import com.google.gerrit.reviewdb.client.Change.Key;
+import com.google.gerrit.entities.Change.Key;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.data.AccountAttribute;
 import com.google.gerrit.server.data.ChangeAttribute;
 import com.google.gerrit.server.data.PatchSetAttribute;
 import com.google.gerrit.server.events.ChangeMergedEvent;
 import com.google.gerrit.server.events.PatchSetCreatedEvent;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -91,12 +93,12 @@ public class EiffelEventGeneratorTest {
     private ArgumentCaptor<String> valueCaptor;
 
     @Before
-    public void setUp() throws ConnectException, FileNotFoundException, NoSuchElementException {
+    public void setUp() throws ConnectException, FileNotFoundException, NoSuchElementException, RestApiException, PermissionBackendException {
         setUpMocks();
     }
 
     @Test
-    public void testEiffelSourceChangeSubmittedEventGenerator() {
+    public void testEiffelSourceChangeSubmittedEventGenerator() throws RestApiException, PermissionBackendException {
         populateChangeMergedEvent();
 
         final EiffelSourceChangeSubmittedEvent eiffelEvent =
@@ -107,7 +109,7 @@ public class EiffelEventGeneratorTest {
     }
 
      @Test
-     public void testEiffelSourceChangeCreatedEventGenerator() {
+     public void testEiffelSourceChangeCreatedEventGenerator() throws RestApiException, PermissionBackendException {
      populatePatchSetCreatedEvent();
 
         final EiffelSourceChangeCreatedEvent eiffelEvent = EiffelSourceChangeCreatedEventGenerator.generate(
@@ -149,7 +151,7 @@ public class EiffelEventGeneratorTest {
 
     @Test
     public void testGetPreviousEiffelEventInSourceChangeCreated()
-            throws ConnectException, FileNotFoundException, NoSuchElementException {
+            throws ConnectException, FileNotFoundException, NoSuchElementException, RestApiException, PermissionBackendException {
         //Isn't this covered by com.ericsson.gerrit.plugins.eiffel.linking.LinkingRunnerTest?
         populatePatchSetCreatedEvent();
 
@@ -169,7 +171,7 @@ public class EiffelEventGeneratorTest {
 
     @Test
     public void testGetPreviousEiffelEventInSourceChangeSubmitted()
-            throws ConnectException, FileNotFoundException, NoSuchElementException {
+            throws ConnectException, FileNotFoundException, NoSuchElementException, RestApiException, PermissionBackendException {
         //Isn't this covered by com.ericsson.gerrit.plugins.eiffel.linking.LinkingRunnerTest?
         populateChangeMergedEvent();
 
@@ -189,7 +191,7 @@ public class EiffelEventGeneratorTest {
 
     @Test
     public void testCreateLinksForSCCWithNoPreviousEventIdSaved()
-            throws ConnectException, FileNotFoundException, NoSuchElementException {
+            throws ConnectException, FileNotFoundException, NoSuchElementException, RestApiException, PermissionBackendException {
         //Isn't this covered by com.ericsson.gerrit.plugins.eiffel.linking.LinkingRunnerTest?
         populatePatchSetCreatedEvent();
 
@@ -205,7 +207,7 @@ public class EiffelEventGeneratorTest {
 
     @Test
     public void testCreateLinksForSCSWithNoPreviousEventIdSaved()
-            throws ConnectException, FileNotFoundException, NoSuchElementException {
+            throws ConnectException, FileNotFoundException, NoSuchElementException, RestApiException, PermissionBackendException {
         //Isn't this covered by com.ericsson.gerrit.plugins.eiffel.linking.LinkingRunnerTest?
         populateChangeMergedEvent();
 
@@ -221,7 +223,7 @@ public class EiffelEventGeneratorTest {
 
     @Test
     public void testCreateLinksForSCCWithPreviousEventIdSaved()
-            throws ConnectException, FileNotFoundException, NoSuchElementException {
+            throws ConnectException, FileNotFoundException, NoSuchElementException, RestApiException, PermissionBackendException {
         //Isn't this covered by com.ericsson.gerrit.plugins.eiffel.linking.LinkingRunnerTest?
         populatePatchSetCreatedEvent();
 
@@ -242,7 +244,7 @@ public class EiffelEventGeneratorTest {
 
     @Test
     public void testCreateLinksForSCSWithPreviousEventIdSaved()
-            throws ConnectException, FileNotFoundException, NoSuchElementException {
+            throws ConnectException, FileNotFoundException, NoSuchElementException, RestApiException, PermissionBackendException {
         //Isn't this covered by com.ericsson.gerrit.plugins.eiffel.linking.LinkingRunnerTest?
         populateChangeMergedEvent();
 
@@ -262,7 +264,7 @@ public class EiffelEventGeneratorTest {
     }
 
     @SuppressWarnings("unchecked")
-    private void setUpMocks() throws ConnectException, FileNotFoundException, NoSuchElementException {
+    private void setUpMocks() throws ConnectException, FileNotFoundException, NoSuchElementException, RestApiException, PermissionBackendException {
         changeMergedEvent = mock(ChangeMergedEvent.class);
         patchSetCreatedEvent = mock(PatchSetCreatedEvent.class);
         supplierChangeAttribute = mock(Supplier.class);

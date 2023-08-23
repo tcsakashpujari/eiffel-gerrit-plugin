@@ -14,6 +14,8 @@ import com.ericsson.gerrit.plugins.eiffel.exceptions.NoSuchElementException;
 import com.ericsson.gerrit.plugins.eiffel.git.CommitInformation;
 import com.ericsson.gerrit.plugins.eiffel.storage.EventStorage;
 import com.ericsson.gerrit.plugins.eiffel.storage.EventStorageFactory;
+import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 
 /**
  * This class is responsible for creating links to previous events
@@ -50,8 +52,10 @@ public class LinkGenerator {
      * Create a PREVIOUS_VERSION link to the parent of the given commit id
      *
      * @param commitId of the parent we should link to
+     * @throws PermissionBackendException 
+     * @throws RestApiException 
      */
-    public void addScsPreviousVersion(final String commitId) {
+    public void addScsPreviousVersion(final String commitId) throws RestApiException, PermissionBackendException {
         final List<String> parentsSHAs = commitInformation.getParentsSHAs(commitId,
                 pluginConfig.getProject());
         final String previousEvent = getPreviousEiffelEventId(EventType.SCS_EVENT, parentsSHAs);
@@ -63,8 +67,10 @@ public class LinkGenerator {
      * Create a BASE link to the parent of the given commit id
      *
      * @param commitId of the parent we should link to
+     * @throws PermissionBackendException 
+     * @throws RestApiException 
      */
-    public void addSccBase(final String commitId) {
+    public void addSccBase(final String commitId) throws RestApiException, PermissionBackendException {
         final List<String> parentsSHAs = commitInformation.getParentsSHAs(commitId,
                 pluginConfig.getProject());
         final String previousEvent = getPreviousEiffelEventId(EventType.SCS_EVENT, parentsSHAs);

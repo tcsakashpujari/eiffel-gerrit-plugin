@@ -21,6 +21,8 @@ import com.ericsson.gerrit.plugins.eiffel.events.models.Link;
 import com.ericsson.gerrit.plugins.eiffel.git.CommitInformation;
 import com.ericsson.gerrit.plugins.eiffel.storage.EventStorage;
 import com.ericsson.gerrit.plugins.eiffel.storage.EventStorageFactory;
+import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ EventStorageFactory.class })
@@ -58,7 +60,7 @@ public class LinkGeneratorTest {
     }
 
     @Test
-    public void generatePreviousVersionForScs() {
+    public void generatePreviousVersionForScs() throws RestApiException, PermissionBackendException {
         when(EventStorageFactory.getEventStorage(pluginConfiguration,
                 EventType.SCS_EVENT)).thenReturn(eventStorage);
         when(commitInformation.getParentsSHAs("commit-id", PROJECT_NAME)).thenReturn(
@@ -82,7 +84,7 @@ public class LinkGeneratorTest {
     }
 
     @Test
-    public void generateBaseForScc() {
+    public void generateBaseForScc() throws RestApiException, PermissionBackendException {
         when(EventStorageFactory.getEventStorage(pluginConfiguration,
                 EventType.SCS_EVENT)).thenReturn(eventStorage);
         when(commitInformation.getParentsSHAs("commit-id", PROJECT_NAME)).thenReturn(
@@ -95,7 +97,7 @@ public class LinkGeneratorTest {
     }
 
     @Test
-    public void generateBaseAndPreviousForScc() {
+    public void generateBaseAndPreviousForScc() throws RestApiException, PermissionBackendException {
         when(EventStorageFactory.getEventStorage(pluginConfiguration,
                 EventType.SCC_EVENT)).thenReturn(eventStorage);
         when(EventStorageFactory.getEventStorage(pluginConfiguration,
